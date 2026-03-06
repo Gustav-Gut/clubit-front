@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Badge } from '../badge/badge';
 
 export interface AdvanceTableColumn {
   key: string;
@@ -11,7 +12,7 @@ export interface AdvanceTableColumn {
 @Component({
   selector: 'app-advanced-data-table',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Badge],
   templateUrl: './advanced-data-table.html',
   styleUrls: ['./advanced-data-table.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
