@@ -3,11 +3,15 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
     {
         path: 'auth',
-        loadChildren: () => import('./features/auth/auth.routes').then(m => m.authRoutes)
+        loadChildren: () => import('./features/auth/auth.routes').then(r => r.authRoutes)
+    },
+    {
+        path: 'finances',
+        loadChildren: () => import('./features/finances/finances.routes').then(r => r.financesRoutes)
     },
     {
         path: '',
-        redirectTo: 'auth',
+        redirectTo: 'auth/login',
         pathMatch: 'full'
     }
 ];
