@@ -21,14 +21,14 @@ The absolute easiest way to get this project running is via our fully containeri
 3. Run the following command:
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 The application will be built and served. You can access it at: **[http://localhost:4200](http://localhost:4200)**
 
 To stop the container, run:
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ---
@@ -37,7 +37,7 @@ docker-compose down
 
 If you prefer running the application outside of Docker for development purposes:
 
-1. Ensure you have **Node.js** (v18 or higher) installed.
+1. Ensure you have **Node.js** (v24.14.0 or higher) installed.
 2. Install dependencies:
    ```bash
    npm install
