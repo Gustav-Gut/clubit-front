@@ -1,16 +1,26 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdvancedDataTable, AdvanceTableColumn } from '../../../../shared/ui/advanced-data-table/advanced-data-table';
+import { InvoiceModal } from '../../../../shared/ui/invoice-modal/invoice-modal';
 
 @Component({
   selector: 'app-payments',
   standalone: true,
-  imports: [CommonModule, AdvancedDataTable],
+  imports: [CommonModule, AdvancedDataTable, InvoiceModal],
   templateUrl: './payments.html',
   styleUrls: ['./payments.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Payments {
+  isInvoiceModalOpen = false;
+
+  openInvoiceModal() {
+    this.isInvoiceModalOpen = true;
+  }
+
+  closeInvoiceModal() {
+    this.isInvoiceModalOpen = false;
+  }
 
   columns: AdvanceTableColumn[] = [
     { key: 'invoiceId', label: 'Invoice ID', type: 'text' },
