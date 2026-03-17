@@ -31,11 +31,11 @@
                 <span class="text-sm overflow-hidden whitespace-nowrap transition-opacity duration-300"
                     [class.opacity-0]="isCollapsed()">Dashboard</span>
             </a>
-            <a href="#"
+            <a routerLink="/users" routerLinkActive="bg-primary/10 text-primary font-medium"
                 class="flex items-center gap-3 rounded-xl px-3 h-10 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition-colors">
                 <span class="material-symbols-outlined text-lg shrink-0">group</span>
                 <span class="text-sm overflow-hidden whitespace-nowrap transition-opacity duration-300"
-                    [class.opacity-0]="isCollapsed()">Members</span>
+                    [class.opacity-0]="isCollapsed()">Users Admin</span>
             </a>
         </div>
 
@@ -47,13 +47,7 @@
                 class="flex items-center gap-3 rounded-xl px-3 h-10 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition-colors">
                 <span class="material-symbols-outlined text-lg shrink-0">payments</span>
                 <span class="text-sm overflow-hidden whitespace-nowrap transition-opacity duration-300"
-                    [class.opacity-0]="isCollapsed()">Payments & Invoices</span>
-            </a>
-            <a href="#"
-                class="flex items-center gap-3 rounded-xl px-3 h-10 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition-colors">
-                <span class="material-symbols-outlined text-lg shrink-0">query_stats</span>
-                <span class="text-sm overflow-hidden whitespace-nowrap transition-opacity duration-300"
-                    [class.opacity-0]="isCollapsed()">Reports</span>
+                    [class.opacity-0]="isCollapsed()">Transactions</span>
             </a>
         </div>
     </nav>
