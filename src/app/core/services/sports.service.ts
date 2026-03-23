@@ -17,4 +17,16 @@ export class SportsService {
   updateSportConfig(schoolSportId: string, customFields: any): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/config/${schoolSportId}`, customFields);
   }
+
+  getAvailableSports(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/available`);
+  }
+
+  associateSport(sportId: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/associate`, { sportId });
+  }
+
+  dissociateSport(schoolSportId: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/associate/${schoolSportId}`);
+  }
 }
