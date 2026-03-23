@@ -1,0 +1,51 @@
+@if (confirmService.config()) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-0">
+    <!-- Backdrop -->
+    <div 
+      class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
+      (click)="onCancel()"
+    ></div>
+
+    <!-- Modal Dialog -->
+    <div class="relative transform overflow-hidden rounded-xl bg-slate-900 border border-slate-800 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md w-full animate-modal-in">
+      <div class="px-6 py-6 sm:p-6 sm:pb-5">
+        <div class="sm:flex sm:items-start">
+          <div 
+            class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10 bg-opacity-20"
+            [ngClass]="confirmService.config()?.danger ? 'bg-red-500 text-red-400' : 'bg-primary text-primary'"
+          >
+            <span class="material-symbols-outlined mb-0.5">
+              {{ confirmService.config()?.danger ? 'warning' : 'help' }}
+            </span>
+          </div>
+          <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+            <h3 class="text-lg font-semibold leading-6 text-slate-100" id="modal-title">
+              {{ confirmService.config()?.title }}
+            </h3>
+            <div class="mt-2 text-sm text-slate-400">
+              <p>{{ confirmService.config()?.message }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-slate-900/50 border-t border-slate-800 px-6 py-4 sm:flex sm:flex-row-reverse gap-3 rounded-b-xl">
+        <button 
+          type="button" 
+          (click)="onConfirm()"
+          class="inline-flex w-full justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto transition-colors"
+          [ngClass]="confirmService.config()?.danger ? 'bg-red-500 hover:bg-red-400 focus-visible:outline-red-500' : 'bg-primary hover:bg-primary/90 focus-visible:outline-primary'"
+        >
+          {{ confirmService.config()?.confirmText }}
+        </button>
+        <button 
+          type="button" 
+          (click)="onCancel()"
+          class="mt-3 inline-flex w-full justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-300 shadow-sm ring-1 ring-inset ring-slate-700 hover:bg-slate-700 sm:mt-0 sm:w-auto transition-colors"
+        >
+          {{ confirmService.config()?.cancelText }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
