@@ -1,6 +1,9 @@
 <div class="flex h-screen bg-background-dark overflow-hidden">
-    <app-sidebar></app-sidebar>
-    <main class="flex-1 overflow-y-auto">
+    <app-sidebar class="hidden md:flex"></app-sidebar>
+    <app-mobile-menu class="block md:hidden"></app-mobile-menu>
+    <main class="flex-1 overflow-y-scroll relative">
         <router-outlet></router-outlet>
     </main>
+    <app-toast-container></app-toast-container>
+    <app-confirm-modal></app-confirm-modal>
 </div>
