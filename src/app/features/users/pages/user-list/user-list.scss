@@ -1,0 +1,19 @@
+@keyframes drawerInRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes drawerInBottom {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.animate-drawer-in {
+  animation: drawerInBottom 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@media (min-width: 768px) {
+  .animate-drawer-in {
+    animation: drawerInRight 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+}

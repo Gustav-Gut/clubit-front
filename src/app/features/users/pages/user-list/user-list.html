@@ -1,33 +1,315 @@
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root bg-background-dark">
-    <div class="layout-container flex h-full grow flex-col">
-        <div class="px-4 md:px-8 lg:px-12 flex flex-1 justify-center py-5">
-            <div class="layout-content-container flex flex-col w-full max-w-[1200px] flex-1">
+  <div class="layout-container flex h-full grow flex-col">
+    <div class="px-4 md:px-8 lg:px-12 flex flex-1 justify-center py-5">
+      <div class="layout-content-container flex flex-col w-full max-w-[1200px] flex-1">
 
-                <div class="mb-6 flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white tracking-tight">User Management</h2>
-                        <p class="text-slate-400 text-sm mt-1">Manage all students, tutors, coaches, and administrators.</p>
-                    </div>
-
-                    <button
-                        (click)="navigateToCreate()"
-                        class="h-10 px-5 rounded-lg bg-primary hover:bg-blue-600 text-white text-sm font-bold shadow-[0_0_15px_rgba(59,131,247,0.3)] transition-colors border-none flex items-center gap-2 cursor-pointer">
-                        <span class="material-symbols-outlined text-lg">person_add</span>
-                        New User
-                    </button>
-                </div>
-
-                @if (isLoading()) {
-                    <div class="flex justify-center p-12 text-slate-400">
-                        Loading users...
-                    </div>
-                } @else {
-                    <app-advanced-data-table title="All Users" [columns]="columns" [data]="usersData()"
-                        [pageSize]="10">
-                    </app-advanced-data-table>
-                }
-
-            </div>
+        <!-- Page Header -->
+        <div class="mb-6 flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-bold text-white tracking-tight">User Management</h2>
+            <p class="text-slate-400 text-sm mt-1">Manage all students, tutors, coaches, and administrators.</p>
+          </div>
+          <button (click)="openDrawer()"
+            class="h-10 px-5 rounded-lg bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-lg shadow-primary/20 transition-colors flex items-center gap-2 cursor-pointer shrink-0">
+            <span class="material-symbols-outlined text-lg">person_add</span>
+            New User
+          </button>
         </div>
+
+        @if (isLoading()) {
+          <app-loading message="Loading users..."></app-loading>
+        } @else {
+          <app-advanced-data-table title="All Users" [columns]="columns" [data]="usersData()" [pageSize]="10">
+          </app-advanced-data-table>
+        }
+
+      </div>
     </div>
+  </div>
 </div>
+
+<!-- Slide-over Drawer -->
+<app-drawer
+  [isOpen]="showDrawer()"
+  [title]="drawerTitle"
+  [subtitle]="drawerSubtitle"
+  [icon]="drawerIcon"
+  width="560px"
+  (closed)="closeDrawer()">
+
+  @if (isFormReady()) {
+    <!-- Error banner -->
+    @if (errorMessage()) {
+      <div class="mx-6 mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-2">
+        <span class="material-symbols-outlined text-red-400 text-lg">error</span>
+        <p class="text-red-400 text-sm">{{ errorMessage() }}</p>
+      </div>
+    }
+
+    <form id="userForm" [formGroup]="userForm" (ngSubmit)="onSubmit()" class="px-4 py-4 flex flex-col gap-5">
+
+      <!-- ── Section 1: Select Role ──────────────────────────────── -->
+      <app-drawer-section
+        [number]="1"
+        title="Select User Role"
+        [subtitle]="selectedPrimaryRole() | titlecase"
+        [isOpen]="openSection() === 1"
+        [isDone]="!!section1Done()"
+        (toggle)="toggleSection(1)">
+
+        <div>
+          <label class="text-sm font-medium text-slate-300 block mb-2">Primary Role</label>
+          <div class="relative">
+            <select (change)="onRoleChange($event)"
+              class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 pl-4 pr-10 appearance-none cursor-pointer">
+              <option class="bg-slate-800" value="STUDENT" [selected]="selectedPrimaryRole() === 'STUDENT'">Student</option>
+              <option class="bg-slate-800" value="COACH" [selected]="selectedPrimaryRole() === 'COACH'">Coach</option>
+              <option class="bg-slate-800" value="TUTOR" [selected]="selectedPrimaryRole() === 'TUTOR'">Tutor / Parent</option>
+              <option class="bg-slate-800" value="ADMIN" [selected]="selectedPrimaryRole() === 'ADMIN'">Administrator</option>
+              <option class="bg-slate-800" value="SUPERADMIN" [selected]="selectedPrimaryRole() === 'SUPERADMIN'">Super Admin</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+          </div>
+        </div>
+        <div class="flex justify-end">
+          <button type="button" (click)="toggleSection(2)"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-primary bg-primary/10 hover:bg-primary hover:text-white transition-all border border-primary/30 flex items-center gap-1.5 cursor-pointer">
+            Continue <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </button>
+        </div>
+
+      </app-drawer-section>
+
+      <!-- ── Section 2: General Information ─────────────────────── -->
+      <app-drawer-section
+        [number]="2"
+        title="General Information"
+        [subtitle]="(userForm.get('firstName')?.value || '') + ' ' + (userForm.get('lastName')?.value || '')"
+        [isOpen]="openSection() === 2"
+        [isDone]="!!section2Done()"
+        (toggle)="toggleSection(2)">
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm font-medium text-slate-300 block mb-2">First Name <span class="text-red-400">*</span></label>
+            <input type="text" formControlName="firstName"
+              class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+              placeholder="John" />
+          </div>
+          <div>
+            <label class="text-sm font-medium text-slate-300 block mb-2">Last Name <span class="text-red-400">*</span></label>
+            <input type="text" formControlName="lastName"
+              class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+              placeholder="Doe" />
+          </div>
+          <div>
+            <label class="text-sm font-medium text-slate-300 block mb-2">RUT / ID <span class="text-red-400">*</span></label>
+            <input type="text" formControlName="rut"
+              class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+              placeholder="12345678-9" />
+          </div>
+          <div>
+            <label class="text-sm font-medium text-slate-300 block mb-2">Phone</label>
+            <input type="text" formControlName="phone"
+              class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+              placeholder="+56 9 1234 5678" />
+          </div>
+          <div class="col-span-2">
+            <label class="text-sm font-medium text-slate-300 block mb-2">Email Address <span class="text-red-400">*</span></label>
+            <input type="email" formControlName="email"
+              class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+              placeholder="john.doe@example.com" />
+          </div>
+          <div class="col-span-2">
+            <label class="text-sm font-medium text-slate-300 block mb-2">
+              @if (isEditMode) {
+                New Password
+                <span class="ml-1 text-xs text-slate-500 font-normal">(leave blank to keep current)</span>
+              } @else {
+                Temporary Password <span class="text-red-400">*</span>
+              }
+            </label>
+            <input type="password" formControlName="password"
+              class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+              placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="flex justify-end">
+          <button type="button" (click)="toggleSection(3)"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-primary bg-primary/10 hover:bg-primary hover:text-white transition-all border border-primary/30 flex items-center gap-1.5 cursor-pointer">
+            Continue <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </button>
+        </div>
+
+      </app-drawer-section>
+
+      <!-- ── Section 3: Profile Details (role-specific) ─────────── -->
+      <app-drawer-section
+        [number]="3"
+        [title]="'Profile Details (' + (selectedPrimaryRole() | titlecase) + ')'"
+        [isOpen]="openSection() === 3"
+        [isDone]="section3Done()"
+        (toggle)="toggleSection(3)">
+
+        <!-- Student profile -->
+        @if (selectedPrimaryRole() === 'STUDENT') {
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm font-medium text-slate-300 block mb-2">Birth Date</label>
+              <input type="date" formControlName="student_birthDate"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 transition-colors [color-scheme:dark]" />
+            </div>
+            <div>
+              <label class="text-sm font-medium text-slate-300 block mb-2">Blood Type</label>
+              <input type="text" formControlName="student_bloodType"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+                placeholder="O+" />
+            </div>
+            <div>
+              <label class="text-sm font-medium text-slate-300 block mb-2">Weight (kg)</label>
+              <input type="number" formControlName="student_weight"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+                placeholder="65.5" step="0.1" />
+            </div>
+            <div>
+              <label class="text-sm font-medium text-slate-300 block mb-2">Height (cm)</label>
+              <input type="number" formControlName="student_height"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+                placeholder="175" step="1" />
+            </div>
+            <div class="col-span-2">
+              <label class="text-sm font-medium text-slate-300 block mb-2">Medical Notes</label>
+              <textarea formControlName="student_medicalNotes"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary p-4 placeholder:text-slate-500 transition-colors min-h-[80px]"
+                placeholder="Allergies, conditions, etc."></textarea>
+            </div>
+          </div>
+          @for (sport of sportsSchema(); track sport.id) {
+            @if (sport.schema.student && sport.schema.student.length > 0) {
+              <div class="pt-2">
+                <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm">category</span> {{ sport.sportName }} Fields
+                </p>
+                <div class="grid grid-cols-2 gap-4 bg-slate-800/20 p-4 rounded-xl border border-slate-700/30">
+                  @for (field of sport.schema.student; track field.key) {
+                    <div>
+                      <label class="text-sm font-medium text-slate-300 block mb-2">
+                        {{ field.label }} @if (field.required) { <span class="text-red-400">*</span> }
+                      </label>
+                      <input [type]="field.type === 'number' ? 'number' : 'text'"
+                        [formControlName]="'sport_' + sport.sportName.toLowerCase() + '_student_' + field.key"
+                        [placeholder]="field.label"
+                        class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors" />
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        }
+
+        <!-- Coach profile -->
+        @if (selectedPrimaryRole() === 'COACH') {
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm font-medium text-slate-300 block mb-2">Specialty</label>
+              <input type="text" formControlName="coach_specialty"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+                placeholder="Tennis, Swimming…" />
+            </div>
+            <div>
+              <label class="text-sm font-medium text-slate-300 block mb-2">Years of Experience</label>
+              <input type="number" formControlName="coach_yearsExperience"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+                placeholder="5" />
+            </div>
+            <div class="col-span-2">
+              <label class="text-sm font-medium text-slate-300 block mb-2">Certifications</label>
+              <textarea formControlName="coach_certifications"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary p-4 placeholder:text-slate-500 transition-colors min-h-[80px]"
+                placeholder="ITF Level 2, First Aid…"></textarea>
+            </div>
+          </div>
+          @for (sport of sportsSchema(); track sport.id) {
+            @if (sport.schema.coach && sport.schema.coach.length > 0) {
+              <div class="pt-2">
+                <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm">military_tech</span> {{ sport.sportName }} Fields
+                </p>
+                <div class="grid grid-cols-2 gap-4 bg-slate-800/20 p-4 rounded-xl border border-slate-700/30">
+                  @for (field of sport.schema.coach; track field.key) {
+                    <div>
+                      <label class="text-sm font-medium text-slate-300 block mb-2">
+                        {{ field.label }} @if (field.required) { <span class="text-red-400">*</span> }
+                      </label>
+                      <input [type]="field.type === 'number' ? 'number' : 'text'"
+                        [formControlName]="'sport_' + sport.sportName.toLowerCase() + '_coach_' + field.key"
+                        [placeholder]="field.label"
+                        class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors" />
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        }
+
+        <!-- Tutor profile -->
+        @if (selectedPrimaryRole() === 'TUTOR') {
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm font-medium text-slate-300 block mb-2">Emergency Contact</label>
+              <input type="text" formControlName="tutor_emergencyContact"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+                placeholder="+56 9 8765 4321" />
+            </div>
+            <div>
+              <label class="text-sm font-medium text-slate-300 block mb-2">Occupation</label>
+              <input type="text" formControlName="tutor_occupation"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary h-11 px-4 placeholder:text-slate-500 transition-colors"
+                placeholder="Engineer, Doctor…" />
+            </div>
+            <div class="col-span-2">
+              <label class="text-sm font-medium text-slate-300 block mb-2">Home Address</label>
+              <textarea formControlName="tutor_address"
+                class="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 rounded-lg focus:ring-1 focus:ring-primary p-4 placeholder:text-slate-500 transition-colors min-h-[80px]"
+                placeholder="123 Main St, City"></textarea>
+            </div>
+          </div>
+        }
+
+        <!-- Admin/SuperAdmin -->
+        @if (selectedPrimaryRole() === 'ADMIN' || selectedPrimaryRole() === 'SUPERADMIN') {
+          <div class="flex flex-col items-center py-6 text-slate-500">
+            <span class="material-symbols-outlined text-3xl mb-2 text-slate-600">admin_panel_settings</span>
+            <p class="text-sm">No additional profile fields needed for this role.</p>
+          </div>
+        }
+
+      </app-drawer-section>
+
+    </form>
+  } @else {
+    <div class="h-full flex flex-col items-center justify-center -mt-12">
+      <app-loading message="Preparing user information..."></app-loading>
+    </div>
+  }
+
+  <!-- Footer: must be direct child of app-drawer for slot projection to work -->
+  <ng-container drawer-footer>
+    @if (isFormReady()) {
+      <button type="submit" form="userForm" [disabled]="userForm.invalid || isSaving()"
+        class="px-6 py-2.5 rounded-lg text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-all cursor-pointer shadow-lg shadow-primary/20 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+        @if (isSaving()) {
+          <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>{{ isEditMode ? 'Saving...' : 'Creating...' }}</span>
+        } @else {
+          <span>{{ submitLabel }}</span>
+          <span class="material-symbols-outlined text-sm">{{ isEditMode ? 'save' : 'person_add' }}</span>
+        }
+      </button>
+    }
+  </ng-container></app-drawer>
