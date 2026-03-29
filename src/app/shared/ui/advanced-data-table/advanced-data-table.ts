@@ -3,10 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Badge } from '../badge/badge';
 
+export interface TableAction {
+  label: string;
+  icon?: string;
+  callback: (row: any) => void;
+}
+
 export interface AdvanceTableColumn {
   key: string;
   label: string;
-  type: 'text' | 'currency' | 'status' | 'member';
+  type: 'text' | 'currency' | 'status' | 'member' | 'actions';
+  actions?: TableAction[];
 }
 
 @Component({
