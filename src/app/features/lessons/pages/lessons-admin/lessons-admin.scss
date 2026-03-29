@@ -1,0 +1,22 @@
+// Slide-over drawer animation
+@keyframes drawerInRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes drawerInBottom {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+// Mobile: slide from bottom
+.animate-drawer-in-right {
+  animation: drawerInBottom 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+// Desktop (md+): slide from right
+@media (min-width: 768px) {
+  .animate-drawer-in-right {
+    animation: drawerInRight 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+}

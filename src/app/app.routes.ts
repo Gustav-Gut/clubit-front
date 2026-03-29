@@ -25,6 +25,12 @@ export const routes: Routes = [
         loadChildren: () => import('./features/schools/schools.routes').then(r => r.schoolsRoutes)
     },
     {
+        path: 'lessons',
+        canActivate: [authGuard],
+        loadComponent: () => import('./core/layout/main-layout/main-layout').then(m => m.MainLayout),
+        loadChildren: () => import('./features/lessons/lessons.routes').then(r => r.lessonsRoutes)
+    },
+    {
         path: '',
         redirectTo: 'auth/login',
         pathMatch: 'full'
