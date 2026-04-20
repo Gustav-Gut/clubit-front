@@ -5,9 +5,10 @@
     <!-- Header / Logo -->
     <div class="h-16 flex items-center px-4 mb-4 mt-2 justify-between">
         <div class="flex items-center gap-3 overflow-hidden text-white cursor-pointer" routerLink="/finances/dashboard">
-            <span class="material-symbols-outlined text-primary text-3xl shrink-0">sports_score</span>
+            <img src="/logos/logo.svg" alt="Clubit Logo" class="w-8 h-8 shrink-0 object-contain transition-transform duration-300" 
+                 [class.scale-110]="isCollapsed()" />
             <h2 class="text-2xl font-bold leading-tight tracking-tight transition-opacity duration-300"
-                [class.opacity-0]="isCollapsed()" [class.w-0]="isCollapsed()">Sportivo</h2>
+                [class.opacity-0]="isCollapsed()" [class.w-0]="isCollapsed()">Clubit</h2>
         </div>
     </div>
 
@@ -110,7 +111,7 @@
             </div>
             <div class="flex flex-col min-w-0 transition-opacity duration-300" [class.opacity-0]="isCollapsed()">
                 <p class="text-sm font-semibold text-white truncate">Admin User</p>
-                <p class="text-xs text-slate-400 truncate">admin&#64;sportivo.com</p>
+                <p class="text-xs text-slate-400 truncate">admin&#64;clubit.com</p>
             </div>
             @if(!isCollapsed()) {
             <span
