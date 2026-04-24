@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +10,11 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('clubit-front');
+  private translate = inject(TranslateService);
+
+  constructor() {
+    this.translate.addLangs(['en', 'es-CL', 'es-AR']);
+    this.translate.setFallbackLang('en');
+    this.translate.use('es-CL');
+  }
 }
