@@ -13,8 +13,22 @@ export class App {
   private translate = inject(TranslateService);
 
   constructor() {
-    this.translate.addLangs(['en-US', 'es-CL', 'es-AR']);
-    this.translate.setFallbackLang('en-CL');
-    this.translate.use('es-CL');
+    const supported = ['en-US', 'es-CL', 'es-AR'];
+    this.translate.addLangs(supported);
+    this.translate.setFallbackLang('es-CL');
+
+    const langMap: Record<string, string> = { 'es': 'es-CL', 'en': 'en-US' };
+
+    // Hierarchy of language candidates by priority
+    const candidates = [
+      localStorage.getItem('user_lang'),
+      this.translate.getBrowserCultureLang(),
+      langMap[this.translate.getBrowserLang() || '']
+    ];
+
+    // Select the first candidate that is both defined and supported
+    const finalLang = candidates.find(lang => lang && supported.includes(lang)) || 'es-CL';
+
+    this.translate.use(finalLang);
   }
 }

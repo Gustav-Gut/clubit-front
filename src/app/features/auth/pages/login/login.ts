@@ -47,6 +47,7 @@ export class Login {
           if (info) {
             this.schoolInfo.set(info);
             this.translate.use(info.defaultLanguage);
+            localStorage.setItem('user_lang', info.defaultLanguage);
             this.currentStep.set(2);
           } else {
             this.errorMessage.set('School not found. Please check the code.');
