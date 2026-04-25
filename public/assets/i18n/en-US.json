@@ -46,6 +46,51 @@
   },
   "COMMON": {
     "LOGOUT": "Logout",
-    "EXIT": "EXIT ACCOUNT"
+    "EXIT": "EXIT ACCOUNT",
+    "STATUS": {
+      "PAID": "Paid",
+      "PROCESSING": "Processing",
+      "OVERDUE": "Overdue"
+    },
+    "TABLE": {
+      "MEMBER": "Member",
+      "DATE": "Date",
+      "AMOUNT": "Amount",
+      "STATUS": "Status"
+    }
+  },
+  "DASHBOARD": {
+    "STATS": {
+      "EXPECTED": "Expected Revenue",
+      "COLLECTED": "Actual Collected",
+      "OVERDUE": "Overdue / Mora",
+      "VS_LAST_MONTH": "{{value}} vs last month",
+      "NEEDS_ATTENTION": "needs attention"
+    },
+    "CHART": {
+      "TITLE": "6-Month Historical Revenue",
+      "SUBTITLE": "Collected vs Expected per month",
+      "LEGEND_EXPECTED": "Expected",
+      "LEGEND_COLLECTED": "Collected"
+    },
+    "QUICK_ACTIONS": {
+      "TITLE": "Quick Actions",
+      "SUBTITLE": "Manage collections",
+      "REMINDERS": "Send Reminders",
+      "REMINDERS_SUB": "To {{count}} overdue accounts",
+      "REPORT": "Generate Report",
+      "REPORT_SUB": "Monthly financial summary",
+      "FEES": "Apply Late Fees",
+      "FEES_SUB": "Process penalties"
+    },
+    "RECENT_PAYMENTS": {
+      "TITLE": "Recent Payments",
+      "VIEW_ALL": "View All"
+    },
+    "TOP_OVERDUE": {
+      "TITLE": "Top Overdue",
+      "DAYS": "Days Overdue",
+      "VIEW_ALL_BTN": "View All Overdue Accounts"
+    }
   }
 }

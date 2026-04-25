@@ -1,26 +1,28 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatCard } from '../../../../shared/ui/stat-card/stat-card';
 import { QuickAction } from '../../../../shared/ui/quick-action/quick-action';
 import { SummaryTable, TableColumn } from '../../../../shared/ui/summary-table/summary-table';
 import { UserActionList } from '../../../../shared/ui/user-action-list/user-action-list';
 import { BarChart, ChartDataPoint } from '../../../../shared/ui/bar-chart/bar-chart';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, StatCard, QuickAction, SummaryTable, UserActionList, BarChart],
+  imports: [CommonModule, StatCard, QuickAction, SummaryTable, UserActionList, BarChart, TranslateModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Dashboard {
+  private translate = inject(TranslateService);
 
   paymentColumns: TableColumn[] = [
-    { key: 'member', label: 'Member', type: 'member' },
-    { key: 'date', label: 'Date', type: 'text' },
-    { key: 'amount', label: 'Amount', type: 'currency' },
-    { key: 'status', label: 'Status', type: 'status' }
+    { key: 'member', label: this.translate.instant('COMMON.TABLE.MEMBER'), type: 'member' },
+    { key: 'date', label: this.translate.instant('COMMON.TABLE.DATE'), type: 'text' },
+    { key: 'amount', label: this.translate.instant('COMMON.TABLE.AMOUNT'), type: 'currency' },
+    { key: 'status', label: this.translate.instant('COMMON.TABLE.STATUS'), type: 'status' }
   ];
 
   recentPayments = [

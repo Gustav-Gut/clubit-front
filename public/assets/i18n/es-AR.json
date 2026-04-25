@@ -46,6 +46,51 @@
   },
   "COMMON": {
     "LOGOUT": "Cerrar sesión",
-    "EXIT": "SALIR DE LA CUENTA"
+    "EXIT": "SALIR DE LA CUENTA",
+    "STATUS": {
+      "PAID": "Pagado",
+      "PROCESSING": "Procesando",
+      "OVERDUE": "Vencido"
+    },
+    "TABLE": {
+      "MEMBER": "Miembro",
+      "DATE": "Fecha",
+      "AMOUNT": "Monto",
+      "STATUS": "Estado"
+    }
+  },
+  "DASHBOARD": {
+    "STATS": {
+      "EXPECTED": "Ingresos Esperados",
+      "COLLECTED": "Recaudación Real",
+      "OVERDUE": "En Mora / Vencido",
+      "VS_LAST_MONTH": "{{value}} vs mes anterior",
+      "NEEDS_ATTENTION": "necesitás atención"
+    },
+    "CHART": {
+      "TITLE": "Histórico de Ingresos (6 Meses)",
+      "SUBTITLE": "Recaudado vs Esperado por mes",
+      "LEGEND_EXPECTED": "Esperado",
+      "LEGEND_COLLECTED": "Recaudado"
+    },
+    "QUICK_ACTIONS": {
+      "TITLE": "Acciones Rápidas",
+      "SUBTITLE": "Gestioná tus cobranzas",
+      "REMINDERS": "Enviá Recordatorios",
+      "REMINDERS_SUB": "A {{count}} cuentas vencidas",
+      "REPORT": "Generá un Reporte",
+      "REPORT_SUB": "Resumen financiero mensual",
+      "FEES": "Aplicar Multas",
+      "FEES_SUB": "Procesar penalizaciones"
+    },
+    "RECENT_PAYMENTS": {
+      "TITLE": "Pagos Recientes",
+      "VIEW_ALL": "Ver Todo"
+    },
+    "TOP_OVERDUE": {
+      "TITLE": "Principales Morosos",
+      "DAYS": "Días de Mora",
+      "VIEW_ALL_BTN": "Ver Todas las Cuentas Vencidas"
+    }
   }
 }

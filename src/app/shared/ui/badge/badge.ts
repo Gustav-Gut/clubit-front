@@ -1,17 +1,18 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 export type BadgeTheme = 'success' | 'warning' | 'error' | 'info' | 'default';
 
 @Component({
   selector: 'app-badge',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   template: `
     <span 
       class="inline-flex items-center px-2 py-1 rounded-full text-[11px] font-bold border uppercase tracking-wide"
       [ngClass]="themeClasses">
-      {{displayLabel}}
+      {{ (status ? 'COMMON.STATUS.' + status.toUpperCase() : label) | translate }}
     </span>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -21,15 +22,12 @@ export class Badge implements OnChanges {
   @Input() theme: BadgeTheme = 'default';
   @Input() status: string = '';
 
-  displayLabel: string = '';
   themeClasses: string = '';
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.status) {
-      this.displayLabel = this.status;
       this.themeClasses = this.getClassesForStatus(this.status);
     } else {
-      this.displayLabel = this.label;
       this.themeClasses = this.getClassesForTheme(this.theme);
     }
   }
