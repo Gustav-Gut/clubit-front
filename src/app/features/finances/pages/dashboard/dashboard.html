@@ -81,7 +81,7 @@
                         <div class="flex flex-col gap-4">
                             @for(account of overdueAccounts; track account.initials) {
                             <app-user-action-list [initials]="account.initials" [title]="account.name"
-                                [subtitle]="account.daysOverdue + ' &middot; $' + account.amount">
+                                [subtitle]="('COMMON.DAYS_OVERDUE' | translate:{count: account.daysCount}) + ' &middot; $' + (account.amount | number:'1.2-2')">
                             </app-user-action-list>
                             }
                         </div>

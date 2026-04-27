@@ -96,7 +96,16 @@
         "PREV": "Prev",
         "NEXT": "Next"
       }
-    }
+    },
+    "MONTHS": {
+      "MAY": "May",
+      "JUN": "Jun",
+      "JUL": "Jul",
+      "AUG": "Aug",
+      "SEP": "Sep",
+      "OCT": "Oct"
+    },
+    "DAYS_OVERDUE": "{{count}} Days"
   },
   "DASHBOARD": {
     "STATS": {
